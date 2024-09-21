@@ -1,0 +1,23 @@
+/* Áp dụng cho toàn bộ trang */
+::-webkit-scrollbar {
+    width: 8px; /* Độ rộng của thanh cuộn dọc */
+    height: 8px; /* Độ cao của thanh cuộn ngang */
+  }
+  
+  /* Màu nền của thanh cuộn */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Màu của thanh cuộn */
+  ::-webkit-scrollbar-thumb {
+    background-color: #888; /* Màu của thanh cuộn */
+    border-radius: 10px; /* Bo góc cho thanh cuộn */
+    border: 2px solid #f1f1f1; /* Đường viền xung quanh thanh cuộn */
+  }
+  
+  /* Khi người dùng rê chuột qua thanh cuộn */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Thay đổi màu thanh cuộn khi rê chuột qua */
+  }
+  
