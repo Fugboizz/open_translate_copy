@@ -1,20 +1,24 @@
 "use client";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import LanguageSelector from "../container/LanguageSelector";
+import { useState, useEffect, MouseEvent } from "react";
 import TextTranslate from "../textTranslate/TextTranslate";
-const Container = () => {
-  const [countText, setCountText] = useState(0);
+import ImageTranslate from "@/app/repository/textTranslate/ImageTranslate";
+import DocsTranslate from "@/app/repository/textTranslate/DocsTranslate";
+import WebsTranslate from "@/app/repository/textTranslate/WebsTranslate";
+import ChooseLanguage from "@/app/repository/textTranslate/ChooseLanguage";
+
+interface ContainerProps {}
+
+const Container: React.FC<ContainerProps> = () => {
+  const [countText, setCountText] = useState<number>(0);
+  const [selectedKey, setSelectedKey] = useState<string>("van-ban");
+  const [languages, setLanguages] = useState<string[]>([]);
   const count = () => {
     if (countText < 5000) {
-      setCountText(count);
-    } else {
-      return;
+      setCountText(countText + 1); // Fix lỗi `count` gây ra vòng lặp
     }
   };
-  const [selectedKey, setSelectedKey] = useState("van-ban");
-  const [languages, setLanguages] = useState([]);
+
   useEffect(() => {
     const storedLanguages = localStorage.getItem("languages");
     if (storedLanguages) {
@@ -22,14 +26,16 @@ const Container = () => {
     }
   }, []);
 
-  const handleButtonClick = (key, event) => {
+  const handleButtonClick = (
+    key: string,
+    event: MouseEvent<HTMLButtonElement>
+  ) => {
     const button = event.currentTarget;
     const ripple = document.createElement("span");
     ripple.classList.add("ripple");
     const rect = button.getBoundingClientRect();
     ripple.style.left = `${event.clientX - rect.left}px`;
     ripple.style.top = `${event.clientY - rect.top}px`;
-
     button.appendChild(ripple);
     setTimeout(() => {
       ripple.remove();
@@ -99,33 +105,6 @@ const Container = () => {
           </Link>
         </button>
 
-        {/* Nút Video */}
-        <button
-          onClick={(e) => handleButtonClick("video", e)}
-          className={`relative overflow-hidden flex justify-center items-center gap-2 transition-all duration-300 ease-in-out 
-            ${
-              selectedKey === "video"
-                ? "bg-white border-gray-300"
-                : "bg-white border-gray-300"
-            } text-blue-500 px-4 py-2 rounded-md border`}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24"
-            viewBox="0 0 24 24"
-            width="24"
-            fill="rgb(25,103,210)"
-          >
-            <path d="M17 10.5V7c0-.83-.67-1.5-1.5-1.5h-11C4.67 5.5 4 6.17 4 7v10c0 .83.67 1.5 1.5 1.5h11c.83 0 1.5-.67 1.5-1.5v-3.5l4 4v-11l-4 4z"></path>
-          </svg>
-          <Link
-            className="text-blue-600"
-            href={"#../textTranslate/TextTranslate"}
-          >
-            Tài Liệu
-          </Link>
-        </button>
-
         {/* Nút Tài Liệu */}
         <button
           onClick={(e) => handleButtonClick("tai-lieu", e)}
@@ -149,54 +128,67 @@ const Container = () => {
             className="text-blue-600"
             href={"#../textTranslate/TextTranslate"}
           >
-            Trang Web
+            Tài Liệu
           </Link>
         </button>
+
+        {/* Nút Web */}
+        <button
+          onClick={(e) => handleButtonClick("web", e)}
+          className={`relative overflow-hidden flex justify-center items-center gap-2 transition-all duration-300 ease-in-out 
+            ${
+              selectedKey === "web"
+                ? "bg-white border-gray-300"
+                : "bg-white border-gray-300"
+            } text-blue-500 px-4 py-2 rounded-md border`}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            focusable="false"
+            className="ep0rzf NMm5M"
+          >
+            <path
+              d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 9h10.5v3.5H4V9zm0 5.5h10.5V18H4v-3.5zM20 18h-3.5V9H20v9z"
+              fill="rgb(59 130 246 / var(--tw-bg-opacity))"
+            ></path>
+          </svg>
+          Trang Web
+        </button>
       </ul>
-      <div className="flex justify-between items-center">
-        <div>
-          <ul className="flex items-center gap-10 py-4 px-2">
-            <li
-              className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
+      <div className="flex items-center justify-between">
+        <div className="flex items-center w-1/2">
+          <div>
+            <ul className="flex items-center gap-10 py-4 px-2">
+              <li
+                className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
            after:bg-blue-600 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300"
-            >
-              Phát Hiện Ngôn Ngữ
-            </li>
-            {languages.length > 0 ? (
-              languages.map((language, index) => (
+              >
+                Phát Hiện Ngôn Ngữ
+              </li>
+              {languages.length > 0 ? (
+                languages.map((language, index) => (
+                  <li
+                    className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
+            after:bg-blue-600 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300"
+                    key={index}
+                  >
+                    {language}
+                  </li>
+                ))
+              ) : (
                 <li
                   className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
             after:bg-blue-600 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300"
-                  key={index}
                 >
-                  {language}
+                  Không có dữ liệu ngôn ngữ
                 </li>
-              ))
-            ) : (
-              <li
-                className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
-            after:bg-blue-600 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300"
-              >
-                Không có dữ liệu ngôn ngữ
-              </li>
-            )}
-            <a href="/" className="translate-x-">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m4.5 15.75 7.5-7.5 7.5 7.5"
-                />
-              </svg>
-            </a>
-          </ul>
+              )}
+
+              <ChooseLanguage></ChooseLanguage>
+            </ul>
+          </div>
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -213,88 +205,52 @@ const Container = () => {
           />
         </svg>
 
-        <div>
-          <ul className="flex items-center gap-10 py-4 px-2">
-            <li
-              className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
+        <div className="flex justify-between items-center w-1/2 ml-4">
+          <div>
+            <ul className="flex items-center gap-10 py-4 px-2">
+              <li
+                className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
            after:bg-blue-600 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300"
-            >
-              Phát Hiện Ngôn Ngữ
-            </li>
-            {languages.length > 0 ? (
-              languages.map((language, index) => (
+              >
+                Phát Hiện Ngôn Ngữ
+              </li>
+              {languages.length > 0 ? (
+                languages.map((language, index) => (
+                  <li
+                    className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
+            after:bg-blue-600 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300"
+                    key={index}
+                  >
+                    {language}
+                  </li>
+                ))
+              ) : (
                 <li
                   className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
             after:bg-blue-600 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300"
-                  key={index}
                 >
-                  {language}
+                  Không có dữ liệu ngôn ngữ
                 </li>
-              ))
-            ) : (
-              <li
-                className="hover:bg-blue-50 cursor-pointer py-3 relative after:absolute after:bottom-0 after:left-0
-            after:bg-blue-600 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300"
-              >
-                Không có dữ liệu ngôn ngữ
-              </li>
-            )}
-            <a href="/" className="translate-x-">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m4.5 15.75 7.5-7.5 7.5 7.5"
-                />
-              </svg>
-            </a>
-          </ul>
+              )}
+              <ChooseLanguage></ChooseLanguage>
+            </ul>
+          </div>
         </div>
       </div>
-      <div className="flex items-center gap-10 h-[250px]">
-        <div className="relative w-1/2  h-full">
-          <input type="text" className=" w-full h-full rounded-md border " />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6 absolute bottom-1.5 left-1.5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"
-            />
-          </svg>
-        </div>
-
-        <div className="relative w-1/2  h-full">
-          <input type="text" className=" w-full h-full rounded-md border " />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6 absolute bottom-1.5 left-1.5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"
-            />
-          </svg>
-        </div>
-      </div>
+      <ul>
+        <li className={selectedKey == "van-ban" ? "" : "hidden"}>
+          <TextTranslate></TextTranslate>
+        </li>
+        <li className={selectedKey == "hinh-anh" ? "" : "hidden"}>
+          <ImageTranslate></ImageTranslate>
+        </li>
+        <li className={selectedKey == "tai-lieu" ? "" : "hidden"}>
+          <DocsTranslate></DocsTranslate>
+        </li>
+        <li className={selectedKey == "web" ? "" : "hidden"}>
+          <WebsTranslate></WebsTranslate>
+        </li>
+      </ul>
     </div>
   );
 };

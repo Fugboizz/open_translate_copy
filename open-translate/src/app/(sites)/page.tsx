@@ -1,9 +1,25 @@
 "use client";
 import { Editor } from "@tinymce/tinymce-react";
-import { Button, Card, Dropdown, Form, Input, InputNumber, Select, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Dropdown,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Typography,
+} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Download, EditPencil, Star } from "iconoir-react";
-import { creativityLevels, languages, modelAI, optionsCopy, tones, viewPoints } from "./data";
+import {
+  creativityLevels,
+  languages,
+  modelAI,
+  optionsCopy,
+  tones,
+  viewPoints,
+} from "../../../constants/ai-rewriter/data";
 import { useForm } from "antd/es/form/Form";
 const { Title } = Typography;
 
@@ -36,8 +52,13 @@ export default function ReWriter() {
                   options={languages}
                 />
               </Form.Item>
-              <Form.Item name="dataInput" rules={[{ required: true, message: 'Hãy nhập văn bản !' }]}>
-                <Title level={5}>Văn bản mục tiêu <strong className="text-red-500">*</strong></Title>
+              <Form.Item
+                name="dataInput"
+                rules={[{ required: true, message: "Hãy nhập văn bản !" }]}
+              >
+                <Title level={5}>
+                  Văn bản mục tiêu <strong className="text-red-500">*</strong>
+                </Title>
                 <TextArea
                   placeholder="Dán văn bản mà bạn muốn viết lại hoặc cải thiện..."
                   rows={10}
@@ -82,15 +103,22 @@ export default function ReWriter() {
                 </Form.Item>
                 <Form.Item name="numberResult">
                   <Title level={5}>Số lượng kết quả</Title>
-                  <InputNumber className="w-full" size="large" placeholder="eg.5" />
+                  <InputNumber
+                    className="w-full"
+                    size="large"
+                    placeholder="eg.5"
+                  />
                 </Form.Item>
               </div>
-              <Button type="primary" htmlType="submit" className="rounded-3xl w-full">
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="rounded-3xl w-full"
+              >
                 Viết lại AI
               </Button>
             </div>
           </Form>
-
         </div>
       </Card>
       <Card className="w-full">
@@ -101,10 +129,7 @@ export default function ReWriter() {
               size="large"
               className="w-full"
               value="1"
-              options={[
-                { value: "1", label: "Tất cả sổ tay" },
-
-              ]}
+              options={[{ value: "1", label: "Tất cả sổ tay" }]}
             />
           </div>
           <Dropdown menu={{ items: optionsCopy }} trigger={["click"]}>

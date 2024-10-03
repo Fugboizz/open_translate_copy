@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AntdStyledComponentsRegistry from "@/components/registry/AntdStyledComponentsRegistry";
+import React, { ReactNode } from "react";
+import AntdStyledComponentsRegistry from "@/app/repository/registry/AntdStyledComponentsRegistry";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -8,7 +9,10 @@ export const metadata = {
   description: "AI Rewriter",
 };
 
-export default function RootLayout({ children }) {
+interface LayoutProps {
+  children: ReactNode;
+}
+export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body className={inter.className}>
