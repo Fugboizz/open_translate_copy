@@ -7,8 +7,8 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { languages } from "/WorkSpace/NextJs/open-translate - Copy/open-translate/constants/ai-rewriter/data";
+import { languages } from "../../../../constants/ai-rewriter/data";
+
 // Định nghĩa kiểu cho người dùng
 interface Language {
   value: string;
