@@ -1,24 +1,30 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect, MouseEvent, SetStateAction } from "react";
 import TextTranslate from "../textTranslate/TextTranslate";
 import ImageTranslate from "@/app/repository/textTranslate/ImageTranslate";
 import DocsTranslate from "@/app/repository/textTranslate/DocsTranslate";
 import WebsTranslate from "@/app/repository/textTranslate/WebsTranslate";
 import ChooseLanguage from "@/app/repository/textTranslate/ChooseLanguage";
-
+interface ChooseLanguageProps {
+  data: string[];
+  onUpdateData: (newItem: string) => void;
+}
 interface ContainerProps {}
 
 const Container: React.FC<ContainerProps> = () => {
   const [countText, setCountText] = useState<number>(0);
   const [selectedKey, setSelectedKey] = useState<string>("van-ban");
   const [languages, setLanguages] = useState<string[]>([]);
+  
   const count = () => {
     if (countText < 5000) {
-      setCountText(countText + 1); // Fix lỗi `count` gây ra vòng lặp
+      setCountText(countText + 1); 
     }
   };
-
+  const handleLanguageChange = (newLanguage: SetStateAction<string[]>) => {
+    return setLanguages(newLanguage); 
+  };
   useEffect(() => {
     const storedLanguages = localStorage.getItem("languages");
     if (storedLanguages) {
@@ -185,8 +191,7 @@ const Container: React.FC<ContainerProps> = () => {
                   Không có dữ liệu ngôn ngữ
                 </li>
               )}
-
-              <ChooseLanguage></ChooseLanguage>
+              <ChooseLanguage onLanguageChange={handleLanguageChange} />
             </ul>
           </div>
         </div>
@@ -232,7 +237,7 @@ const Container: React.FC<ContainerProps> = () => {
                   Không có dữ liệu ngôn ngữ
                 </li>
               )}
-              <ChooseLanguage></ChooseLanguage>
+              <ChooseLanguage onLanguageChange={handleLanguageChange} />
             </ul>
           </div>
         </div>

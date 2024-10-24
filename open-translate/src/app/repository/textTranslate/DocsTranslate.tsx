@@ -1,3 +1,4 @@
+import React, { ChangeEvent } from "react";
 function DocsTranslate() {
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
